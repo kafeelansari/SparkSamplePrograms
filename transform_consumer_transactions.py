@@ -13,12 +13,12 @@ if __name__=="__main__":
         # .options(quote='"')\
         # .options(escape='"')\
         # .options(wholeFile='true')\
-        # .load('file:///home/sylar/Desktop/SKH_dataset/kafka/Consumer_Complaints.csv')
+        # .load(argv[1])
 
     # csv_data.printSchema()
     csv_data.registerTempTable("csvdata")
     distinct_product = sql_cont.sql("select distinct product from csvdata")
     #distinct_product.show()
-    distinct_product.write..saveAsTable("product_2")
+    distinct_product.write.saveAsTable("product_2")
 
 
