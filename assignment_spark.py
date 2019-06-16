@@ -41,7 +41,7 @@ viewTime should end with 's'
 
 
 """
-
+from sys import argv
 import re
 from pyspark import SparkContext,SparkConf
 from pyspark.sql import Row,SparkSession
@@ -69,12 +69,11 @@ def convert_to_row(regx):
 conf = SparkConf().setAppName("Log Parser").setMaster("local[1]")
 sc = SparkContext(conf=conf)
 sc.setLogLevel("Error")
-raw_record = sc.textFile('file:///home/sylar/Desktop/SKH_dataset/spark/event_logs.txt')
+raw_record = sc.textFile(argv[1])
 log = raw_record.map(lambda x: convert_to_row(x))
 log_schema = log.map(lambda p: Row(ts=p[0],event=p[1],channel=p[2],pid=p[3],price=p[4],ViewTime=p[5]))
 spark = SparkSession.builder.master("local[1]").getOrCreate()
 log_df = spark.createDataFrame(log_schema)
-#log_df.coalesce(1).write.csv(path="file:///home/sylar/spark_saved/csv_files/result_log.csv")
 #cached_log = log_df.groupby('event').count().cache()
 #cached_log.filter(log_df.event=='AddToCart').show()
 # count = cached_log.filter(log_df.event=="AddToCart").count()/ cached_log.filter(log_df.event=="PageView").count()

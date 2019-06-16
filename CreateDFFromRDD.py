@@ -1,10 +1,13 @@
 from pyspark.sql import SparkSession
 from pyspark import SparkContext,SparkConf
 from pyspark.sql import Row
+from sys import argv
+
+
 
 """Below is the spark session created to access spark functionalities """
 spark = SparkSession.builder.master("local[1]").appName("TestSQL").getOrCreate()
-# df1= spark.read.csv("file:///home/sylar/Desktop/SKH_dataset/spark/people.txt")
+# df1= spark.read.csv(argv[1])
 #print(df1.first())
 
 """Example of temp view being shared between two sparksessions"""
@@ -28,7 +31,7 @@ print("This is the 1st method of creating an RDD")
 #conf = SparkConf().setMaster("local[1]").setAppName("RDD to DF")
 #sc = SparkContext(conf=conf)
 sc = spark.sparkContext
-lines = sc.textFile("file:///home/sylar/Desktop/SKH_dataset/spark/people.txt")
+lines = sc.textFile(argv[1])
 parts = lines.map(lambda l: l.split(","))
 people = parts.map(lambda p: Row(name=p[0],age=int(p[1])))
 schemaPeople = spark.createDataFrame(people)

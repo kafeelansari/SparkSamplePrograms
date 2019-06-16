@@ -1,5 +1,6 @@
 from pyspark import SparkContext,SparkConf
 from pyspark.streaming import StreamingContext
+from sys import argv
 
 conf = SparkConf().setMaster("local[2]")
 sc = SparkContext(conf=conf)
@@ -34,7 +35,7 @@ ssc.awaitTermination()
 
 """Below are the functions of a rdd and output of their value and type"""
 
-# rdd = sc.textFile("file:///home/sylar/Desktop/SKH_dataset/spark/sample_rdd_explore.txt")
+# rdd = sc.textFile(argv[1])
 # rdd2 = sc.parallelize(range(1,10))
 # print("sc.defaultMinPartitions ---> "+ str(sc.defaultMinPartitions))
 # print("sc.defaultParallelism --->" + str(sc.defaultParallelism))
